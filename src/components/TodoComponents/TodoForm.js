@@ -1,5 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  ToastConsumer,
+  ToastProvider,
+  withToastManager,
+} from 'react-toast-notifications';
+
 
 const TodoForm = (props) => {
   return(
@@ -8,7 +14,9 @@ const TodoForm = (props) => {
       value={props.searchInputValue}
       placeholder="Search for todos"
       />
-      <form onSubmit={props.handleSubmit}>
+      <form onSubmit={(e) => {
+          props.handleSubmit(e, props);
+        }}>
         <input type="text" name="todo_name" placeholder="What do you need to do?" 
           onChange={props.handleOnChange}
           value={props.inputValue}
@@ -26,4 +34,4 @@ const TodoForm = (props) => {
   );
 }
 
-export default TodoForm;
+export default withToastManager(TodoForm);

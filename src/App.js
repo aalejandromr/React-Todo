@@ -4,13 +4,19 @@ import TodoList from './components/TodoComponents/TodoList'
 import './components/TodoComponents/Todo.css';
 import { faPlusSquare, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
-
+import {
+  ToastConsumer,
+  ToastProvider,
+  withToastManager,
+} from 'react-toast-notifications';
+import Home from './components/HomeWithToast';
 library.add(faPlusSquare, faTimesCircle);
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
+  
   constructor(){
     super();
     this.state = {
@@ -19,6 +25,7 @@ class App extends React.Component {
       count: 2,
       searchInputValue: ""
     }
+    this.notificationSystem = React.createRef();
   }
 
   handleChange = (event) => {
@@ -38,8 +45,16 @@ class App extends React.Component {
       }
     })
   }
+
+  onlineCallback = () => {
+    this.props.toastManager.remove(this.offlineToastId);
+    this.offlineToastId = null;
+  };
   
-  handleFormSubmit = (event) => {
+  handleFormSubmit = (event, props) => {
+    // console.log(toastManager);
+    const { toastManager } = props;
+    // console.log(toastManager);
     event.preventDefault();
     this.setState((prevState) => {
       return {
@@ -47,17 +62,31 @@ class App extends React.Component {
       }
     });
     this.setState(prevState => {
-      return {
-        todoList: [...prevState.todoList, {
-          id: prevState.count,
-          todo_name: prevState.todo,
-          due_date: Date.now(),
-          completed: false,
-          class: ""
-        }]
+      // console.log(prevState.)
+      if(prevState.todo === ""){
+        toastManager.add(
+          'Something went wrong: Seems like you were trying to add an empty task', {
+          appearance: "error",
+          autoDismiss: true,
+          pauseOnHover: false
+        });
+        return {
+          todoList: [...prevState.todoList]
+        }
+      } else {
+        return {
+          todoList: [...prevState.todoList, {
+            id: prevState.count,
+            todo_name: prevState.todo,
+            due_date: Date.now(),
+            completed: false,
+            class: ""
+          }]
+        }
       }
     });
     this.setState({todo: ""})
+    // console.log(this.props);
     // console.log(this.state.todoList);
   }
 
@@ -89,18 +118,40 @@ class App extends React.Component {
   render() {
     return (
       <div className="list-wrapper">
-        <TodoForm 
-          handleSubmit={this.handleFormSubmit} 
-          handleOnChange={this.handleChange}
-          inputValue={this.state.todo}
-          handleClearCompleted={this.handleClearCompleted}
-          handleSearch={this.handleSearch}
-          searchInputValue={this.state.searchInputValue}
-        />
+        <ToastProvider>
+          <TodoForm 
+            handleSubmit={this.handleFormSubmit} 
+            handleOnChange={this.handleChange}
+            inputValue={this.state.todo}
+            handleClearCompleted={this.handleClearCompleted}
+            handleSearch={this.handleSearch}
+            searchInputValue={this.state.searchInputValue}
+          />
+        </ToastProvider>
         <TodoList lists={this.state.todoList} handleOnListClick={this.handleListClick}/>
       </div>
     );
   }
 }
 
+// wrap your component to pass in the `toastManager` prop
+
+// const App = () => (
+
+//   <ToastProvider>
+//     <Home />
+
+//     {/* or if render props are more your speed */}
+//     <ToastConsumer>
+//       {({ add }) => (
+//         <button onClick={(e) => add(`Notified by ${e.target}`, {
+//           appearance: 'info'
+//         })}>
+//           Toasty
+//         </button>
+//       )}
+//     </ToastConsumer>
+//   </ToastProvider>
+
+// );
 export default App;
