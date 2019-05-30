@@ -12,7 +12,8 @@ class App extends React.Component {
     this.state = {
       todoList: [],
       todo: "",
-      count: 2
+      count: 2,
+      searchInputValue: ""
     }
   }
 
@@ -47,7 +48,8 @@ class App extends React.Component {
           id: prevState.count,
           todo_name: prevState.todo,
           due_date: Date.now(),
-          completed: false
+          completed: false,
+          class: ""
         }]
       }
     });
@@ -63,16 +65,36 @@ class App extends React.Component {
     })
   }
 
+  handleSearch = (e) => {
+    this.setState({searchInputValue: e.target.value});
+    this.setState(prevState => {
+      return {
+        todoList: prevState.todoList.map(list => {
+          let regex = new RegExp(prevState.searchInputValue, 'gi');
+          if(!regex.test(list.todo_name)) {
+            list.class = "filtered";
+          } else {
+            list.class = "";
+          }
+          // console.log(regex.test(list.todo_name));
+          return list;
+        })
+      }
+    })
+  }
+
   render() {
     return (
       <div>
-        <TodoList lists={this.state.todoList} handleOnListClick={this.handleListClick}/>
         <TodoForm 
           handleSubmit={this.handleFormSubmit} 
           handleOnChange={this.handleChange}
           inputValue={this.state.todo}
           handleClearCompleted={this.handleClearCompleted}
+          handleSearch={this.handleSearch}
+          searchInputValue={this.state.searchInputValue}
         />
+        <TodoList lists={this.state.todoList} handleOnListClick={this.handleListClick}/>
       </div>
     );
   }

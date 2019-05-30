@@ -16,7 +16,14 @@ const TodoList = (props) => {
       {
         props.lists.map( (list, index) => {
           // if(!list.completed) {
-            return <div key={list.id} onClick={(e) => props.handleOnListClick(e, index)} > {list.todo_name} </div>
+            return( 
+              <div 
+                key={list.id} 
+                onClick={(e) => props.handleOnListClick(e, index)}
+                className={list.class}
+              > 
+                  {list.todo_name}
+              </div>)
           // }
         })
       }
