@@ -22,31 +22,45 @@ class App extends React.Component {
 
   handleListClick = (e, id) => {
     e.target.classList.toggle("done");
-    let newTodos = [...this.state.todoList];
-    newTodos[id].completed = !newTodos[id].completed;
-    this.setState({todoList: newTodos});
+    this.setState(prevState => {
+      return {
+        todoList: prevState.todoList.map((list, index) => {
+          if(index === id) {
+            list.completed = !list.completed;
+          }
+          return list;
+        })
+      }
+    })
   }
   
   handleFormSubmit = (event) => {
     event.preventDefault();
-    this.setState({count: this.state.count + 1});
-    this.setState({
-      todoList: [...this.state.todoList, {
-        id: this.state.count,
-        todo_name: this.state.todo,
-        due_date: Date.now(),
-        completed: false
-      }]
+    this.setState((prevState) => {
+      return {
+        count: prevState.count + 1
+      }
+    });
+    this.setState(prevState => {
+      return {
+        todoList: [...prevState.todoList, {
+          id: prevState.count,
+          todo_name: prevState.todo,
+          due_date: Date.now(),
+          completed: false
+        }]
+      }
     });
     this.setState({todo: ""})
     // console.log(this.state.todoList);
   }
 
   handleClearCompleted = () => {
-    let newTodoList = this.state.todoList.filter(list => !list.completed)
-    this.setState({
-      todoList: newTodoList
-    });
+    this.setState(prevState => {
+      return {
+        todoList: prevState.todoList.filter(list => !list.completed)
+      }
+    })
   }
 
   render() {
