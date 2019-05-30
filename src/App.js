@@ -2,6 +2,10 @@ import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList'
 import './components/TodoComponents/Todo.css';
+import { faPlusSquare, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+library.add(faPlusSquare, faTimesCircle);
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -76,7 +80,6 @@ class App extends React.Component {
           } else {
             list.class = "";
           }
-          // console.log(regex.test(list.todo_name));
           return list;
         })
       }
@@ -85,7 +88,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="list-wrapper">
         <TodoForm 
           handleSubmit={this.handleFormSubmit} 
           handleOnChange={this.handleChange}

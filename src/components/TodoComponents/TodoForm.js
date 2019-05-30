@@ -1,4 +1,5 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const TodoForm = (props) => {
   return(
@@ -12,8 +13,14 @@ const TodoForm = (props) => {
           onChange={props.handleOnChange}
           value={props.inputValue}
         />
-        <input type="submit" value="Add TODO"/>
-        <input type="button" value="Clear completed" onClick={props.handleClearCompleted}/>
+        <div className="button-wrapper">
+          <button type="submit">
+            <FontAwesomeIcon icon={['far', 'plus-square']} />
+          </button>
+          <button type="button" onClick={props.handleClearCompleted}>
+            <FontAwesomeIcon icon={['far', 'times-circle']} />
+          </button>
+        </div>
       </form>
     </div>
   );
