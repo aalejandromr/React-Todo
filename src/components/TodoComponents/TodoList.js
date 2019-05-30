@@ -13,6 +13,7 @@ const TodoList = (props) => {
     //   }
     // </div>
     <div className="todo-list-wrapper">
+      <button className="view-all" onClick={props.handleClearFilter}> { /* props.view_all */ } View All </button>
       {
         props.lists.map( (list, index) => {
           // if(!list.completed) {

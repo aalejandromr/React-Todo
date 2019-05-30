@@ -36,6 +36,7 @@
   border-radius: 2%;
   box-sizing: border-box;
   width: 100%;
+  cursor: pointer;
 }
 
 .todo-list-wrapper > div:hover {
@@ -82,4 +83,9 @@ form {
   align-items: center;
   justify-content: center;
   margin-top: 5%;
+}
+
+.view-all {
+  width: 65px;
+  align-self: flex-start;
 }

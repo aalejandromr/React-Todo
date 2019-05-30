@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-  ToastConsumer,
-  ToastProvider,
-  withToastManager,
+  withToastManager
 } from 'react-toast-notifications';
 
 const Home = (props) => {

@@ -1,9 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  ToastConsumer,
-  ToastProvider,
-  withToastManager,
+  withToastManager
 } from 'react-toast-notifications';
 
 

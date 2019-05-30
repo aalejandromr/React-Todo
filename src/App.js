@@ -5,11 +5,9 @@ import './components/TodoComponents/Todo.css';
 import { faPlusSquare, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
-  ToastConsumer,
-  ToastProvider,
-  withToastManager,
+  ToastProvider
 } from 'react-toast-notifications';
-import Home from './components/HomeWithToast';
+// import Home from './components/HomeWithToast';
 library.add(faPlusSquare, faTimesCircle);
 
 class App extends React.Component {
@@ -115,6 +113,20 @@ class App extends React.Component {
     })
   }
 
+  handleClearFilter = () => {
+    this.setState(prevState => {
+      return {
+        searchInputValue: "",
+        todoList: prevState.todoList.map(list => {
+          list.class = "";
+          return list;
+        })
+      }
+    });
+    // e.preventDefault();
+    // console.log("Here");
+  }
+
   render() {
     return (
       <div className="list-wrapper">
@@ -126,9 +138,14 @@ class App extends React.Component {
             handleClearCompleted={this.handleClearCompleted}
             handleSearch={this.handleSearch}
             searchInputValue={this.state.searchInputValue}
+            
           />
         </ToastProvider>
-        <TodoList lists={this.state.todoList} handleOnListClick={this.handleListClick}/>
+        <TodoList 
+          lists={this.state.todoList} 
+          handleOnListClick={this.handleListClick}
+          handleClearFilter={this.handleClearFilter}
+        />
       </div>
     );
   }
